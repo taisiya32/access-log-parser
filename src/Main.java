@@ -1,27 +1,87 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class Main {
-    public static void main (String[] args){
+    public static void main (String[] args)  {
         findfile();
+        String path = new Scanner(System.in).nextLine();
+        //C:\Users\prost\Desktop\FileDirectory\file.txt
+        //C:\Users\prost\Downloads\access.log
+        File file = new File(path);
     }
 
     public static void findfile() {
         int correct_ways_count = 1;
-        while(true) {
+        while (true) {
             System.out.println("Укажите путь к файлу");
             String path = new Scanner(System.in).nextLine();
             //C:\Users\prost\Desktop\FileDirectory\file.txt
+            //C:\Users\prost\Downloads\access.log
             File file = new File(path);
             boolean fileExists = file.exists();
             boolean isDirectory = file.isDirectory();
-            if (fileExists==false) {System.out.println("Файл не существует"); continue;}
-            if (isDirectory==true) {System.out.println(" Указанный путь является путём к папке, а не к файлу"); continue;}
-            if ((fileExists==true)&&(isDirectory==false)) {
+            int countLines = 0;
+
+            if (!fileExists) {
+                System.out.println("Файл не существует");
+                continue;
+            }
+            if (isDirectory) {
+                System.out.println(" Указанный путь является путём к папке, а не к файлу");
+                continue;
+            }
+            if ((fileExists) && (!isDirectory)) {
                 System.out.println("Путь указан верно. " + "Это файл номер " + correct_ways_count);
                 correct_ways_count++;
-            }
-        }}
 
+                ArrayList<Integer> ln = new ArrayList();
+
+                try {
+                    FileReader fileReader = new FileReader(path);
+                    BufferedReader reader =
+                            new BufferedReader(fileReader);
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        countLines++;
+                        int length = line.length();
+                        ln.add(countLines - 1, length);
+                    }
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                System.out.println("Количество строк в файле: " + countLines);
+
+                int min = ln.getFirst();
+                int max = ln.getFirst();
+
+                for (Integer i : ln) {
+                    if (i > max)
+                        max = i;
+
+                    if (i < min)
+                        min = i;}
+
+                try{
+
+                    if(max>1024) {
+                        throw new RuntimeException("Длина строки не должна превышать 1024 символа");
+                    }
+                }catch (RuntimeException e){
+                    e.printStackTrace();
+                    break;
+                }
+
+                System.out.println("Максимальная длина строки: " + max);
+                System.out.println("Минимальная длина строки: " + min);
+            }
+        }
+    }
 }
 
