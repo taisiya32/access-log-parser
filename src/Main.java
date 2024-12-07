@@ -25,6 +25,8 @@ public class Main {
             boolean fileExists = file.exists();
             boolean isDirectory = file.isDirectory();
             int countLines = 0;
+            int yaBot = 0;
+            int googleBot = 0;
 
             if (!fileExists) {
                 System.out.println("Файл не существует");
@@ -50,7 +52,32 @@ public class Main {
                         countLines++;
                         int length = line.length();
                         ln.add(countLines - 1, length);
+
+                        String[] parts = line.split("compatible;");
+
+                        if (parts.length >= 2) {
+                            String fragment = parts[1];
+                     //      System.out.println(fragment);
+                            String[] partsWithUserAgent = fragment.split("/");
+                            if (partsWithUserAgent.length >= 2){
+                                String agent = partsWithUserAgent[0].trim();
+                     //          System.out.println(agent);
+                                 if (agent.equals("YandexBot")) {
+                                    yaBot++;
+                                }
+                                if (agent.equals("Googlebot")) {
+                                    googleBot++;
+                                }
+                            }
+                        }
+
+
                     }
+
+
+                    System.out.println("Доля запросов от YandexBot = "+ yaBot);
+                    System.out.println("Доля запросов от GoogleBot = "+ googleBot);
+
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -76,8 +103,6 @@ public class Main {
                     e.printStackTrace();
                     break;
                 }
-                    System.out.println("Максимальная длина строки: " + max);
-                    System.out.println("Минимальная длина строки: " + min);
             }
         }
     }
