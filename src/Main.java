@@ -67,19 +67,17 @@ public class Main {
 
                     if (i < min)
                         min = i;}
-
                 try{
 
                     if(max>1024) {
-                        throw new RuntimeException("Длина строки не должна превышать 1024 символа");
+                        throw new LongLineException("Длина строки не должна превышать 1024 символа");
                     }
-                }catch (RuntimeException e){
+                }catch (LongLineException e){
                     e.printStackTrace();
                     break;
                 }
-
-                System.out.println("Максимальная длина строки: " + max);
-                System.out.println("Минимальная длина строки: " + min);
+                    System.out.println("Максимальная длина строки: " + max);
+                    System.out.println("Минимальная длина строки: " + min);
             }
         }
     }
